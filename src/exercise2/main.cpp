@@ -43,6 +43,7 @@ void ignore_input_line() {
 
 int main() {
   int command;
+  bool stop = false;
 
   help();
 
@@ -52,6 +53,7 @@ int main() {
     if (!(std::cin >> command) || command < 1 || (command > 3 && command != 100)) {
       if (std::cin.eof()) {
         std::cout << std::endl;
+        stop = true;
         break;
       }
 
@@ -70,8 +72,6 @@ int main() {
 
       continue;
     }
-
-    bool stop = false;
 
     switch (command) {
       case 1: {
