@@ -1,12 +1,30 @@
 #include <iostream>
 #include <string>
+#include <thread>
+
+namespace commands {
+  void clean_decks() {
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    std::cout << "The decks are spotless." << std::endl;
+  }
+
+  void full_speed() {
+    std::cout << "Starting engines!" << std::endl;
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    std::cout << "Running at full speed." << std::endl;
+  }
+
+  void stop() {
+    std::cout << "Stopping engines!" << std::endl;
+    std::this_thread::sleep_for(std::chrono::seconds(3));
+    std::cout << "Engines stopped." << std::endl;
+  }
+}
 
 template <class T>
 void ignore_line(std::basic_istream<T>& i = std::cin) {
   i.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
-
-void foo() {}
 
 void help() {
   std::cout << "Welcome aboard! What is your command?" << std::endl
@@ -56,15 +74,24 @@ int main() {
     bool stop = false;
 
     switch (command) {
-      case 1:
+      case 1: {
         std::cout << "Clean the decks!" << std::endl;
+        std::thread cleaning_crew(commands::clean_decks);
+        cleaning_crew.detach();
         break;
-      case 2:
+      }
+      case 2: {
         std::cout << "Full speed ahead!" << std::endl;
+        std::thread engine_crew(commands::full_speed);
+        engine_crew.join();
         break;
-      case 3:
+      }
+      case 3: {
         std::cout << "Stop!" << std::endl;
+        std::thread engine_crew(commands::stop);
+        engine_crew.join();
         break;
+      }
       case 100:
         stop = true;
         break;
