@@ -50,6 +50,9 @@ int main() {
   while (true) {
     std::cout << "Enter command: ";
 
+    // This conditional mixes reading formatted input, unformatted input, and
+    // validating integers. This makes it harder to understand failure
+    // states and the state of the `cin` stream.
     if (!(std::cin >> command) || command < 1 || (command > 3 && command != 100)) {
       if (std::cin.eof()) {
         std::cout << std::endl;
@@ -73,6 +76,8 @@ int main() {
       continue;
     }
 
+    // If we parsed the input into a command object of some type, this switch
+    // could instead be replaced with polymorphism.
     switch (command) {
       case 1: {
         std::cout << "Clean the decks!" << std::endl;
